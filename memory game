@@ -1,0 +1,81 @@
+using System;
+
+namespace ConsoleApp12
+{
+    class Program
+    {
+		static void Main(string[] args)
+		{
+		
+			int size = int.Parse (Console.ReadLine());
+			int[,] matrix = new int[size, size];
+
+			buildmatrix(matrix);
+			printmatx(matrix);
+		}
+
+		private static void printmatx(int [,] matrix)
+		{
+			for (int i = 0; i < matrix.GetLength(0); i++)
+			{
+				for (int j = 0; j < matrix.GetLength(1); j++)
+				{
+					Console.Write($"{matrix[i,j]} ");
+				}
+				Console.WriteLine();
+			}
+		}
+
+		private static void buildmatrix(int[,] matrix)
+		{
+			int cardnumber = 1;
+			for (int i = 0; i < matrix.GetLength(0); i++)
+			{
+				for (int j = 0; j < matrix.GetLength(1); j = j + 2)
+				{
+					matrix[i, j] = cardnumber;
+					matrix[i, j + 1] = cardnumber;
+					cardnumber++;
+				}
+
+			}
+			int recursion = 200;
+			recursionfunction(matrix, recursion);
+
+		}
+
+		private static void recursionfunction(int[,] matrix, int recursion)
+		{
+			Random generator = new Random();
+			if(recursion > 0)
+			{
+				int row1 = generator.Next(0, matrix.GetLength(0));
+				int row2 = generator.Next(0, matrix.GetLength(0));
+				int coloum1 = generator.Next(0, matrix.GetLength(1));
+				int coloum2 = generator.Next(0, matrix.GetLength(1));
+				int temp = matrix[row1, coloum1];
+				matrix[row1,coloum1] = matrix[row2, coloum2];
+				matrix[row2, coloum2] = temp;
+				recursion--;
+				recursionfunction(matrix,recursion);
+			}
+
+		}
+	}
+
+/*
+ * matrix size input from user
+ * build matrix
+ * shuffle and print matrix
+ * flip 1st cars
+ * check if cell exists
+ * flip 2nd card
+ * check if cell exsists
+ * check if cards are the same
+ * if cards are the same, pull cards out
+ * give points to player
+ * else - skip if condition
+ * 
+ */
+}
+
