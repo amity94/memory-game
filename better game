@@ -1,0 +1,129 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("enter size");
+            int size = getsize();
+
+            int[,] matrix = new  int[ size,  size];
+            buildmatrix(size, matrix);
+
+            PrintMatrix(matrix);
+
+            Console.WriteLine("now let's play");
+            playmatrix(matrix, size);
+
+        }
+
+        private static void playmatrix(int[,] matrix, int size)
+        {
+            int tries = size * (size / 2);
+            Console.WriteLine($"you need {tries} mathces to win the game");
+            int points = tries;
+            int Points = 0;
+            for (int i = 0; i < tries; i++)
+            {
+                Console.WriteLine("please choose a row and a coloum for you card");
+                Console.Write("row: ");
+                int row1 = int.Parse(Console.ReadLine());
+                Console.Write("coloum: ");
+                int col1 = int.Parse(Console.ReadLine());
+                Console.WriteLine("your first card is: " + matrix[row1 - 1, col1 - 1]);
+
+                Console.WriteLine("please choose a row and a coloum for your card");
+                Console.Write("row: ");
+                int row2 = int.Parse(Console.ReadLine());
+                Console.Write("coloum: ");
+                int col2 = int.Parse(Console.ReadLine());
+                Console.WriteLine("your second card is: " + matrix[row2 - 1, col2 - 1]);
+
+                if (matrix[row1 - 1, col1 - 1] == matrix[row2 - 1, col2 - 1])
+                {
+                    Console.WriteLine("great, your cards match");
+                    points++;
+                    Points++;
+                    if (Points == 1)
+                    {
+                        Console.WriteLine($"you have {Points} point");
+                    }
+                    else if (Points > 1)
+                    {
+                        Console.WriteLine($"you have {Points} points");
+                    }
+                    Console.WriteLine("let's keep going until the whole grid is 0");
+                    matrix[row1 - 1, col1 - 1] = 0;
+                    matrix[row2 - 1, col2 - 1] = 0;
+                }
+                else if (matrix[row1 - 1, col1 - 1] != matrix[row2 - 1, col2 - 1])
+                {
+                    Console.WriteLine("looks like you didn't choose cards that match, why don't you try again");
+                }
+                
+                PrintMatrix(matrix);
+            }
+            Console.WriteLine("congratulations, you finished the game");
+        }
+
+        private static void PrintMatrix(int[,] matrix)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write($"{matrix[i, j],2 } ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private static void buildmatrix(int size, int[,] matrix)
+        {
+            Random r = new Random();
+            int zugot = size * size / 2;
+            for (int i = 1; i <= zugot; i++)
+            {
+                // find place for car number 1
+                // put in this place the i
+                int row, col;
+                do
+                {
+                    row = r.Next(0, size);
+                    col = r.Next(0, size);
+                }
+                while (matrix[row, col] != 0);
+                matrix[row, col] = i;
+
+                // find place for car number 2
+                // put in this place the i
+                do
+                {
+                    row = r.Next(0, size);
+                    col = r.Next(0, size);
+                }
+                while (matrix[row, col] != 0);
+                matrix[row, col] = i;
+            }
+        }
+
+        private static int getsize()
+        {
+            int size;
+            do
+            {
+                size = int.Parse(Console.ReadLine());
+            }
+            while (size <= 0 || size % 2 != 0 || size > 8);
+
+            return size;
+        }
+    }
+
+}
